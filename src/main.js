@@ -1,15 +1,24 @@
 var VehicleType = "";
 var url = "";
-var vehicleValue = 0;
-var fipePrice = 0;
-var percentualValue = 0;
+
+
 var brandCars = "https://parallelum.com.br/fipe/api/v2/cars/brands";
 var brandTrucks = "https://parallelum.com.br/fipe/api/v2/trucks/brands";
 var brandMotocycles = "https://parallelum.com.br/fipe/api/v2/motorcycles/brands";
+
 var codeFipe = "";
 let resultOfFipesCount = "";
-let referenceMonth = "";
 let resultOfFipe = ""; 
+let model = "";
+let selectedData = "";
+var vehicleValue = 0;
+var fipePrice = 0;
+var percentualValue = 0;
+let vehicleValueresult = "";
+
+
+
+
 
 //Essa função solicita os dados pra o servidor
 function getType() {
@@ -71,13 +80,13 @@ function selectModel() {
 }
 //pega os anos pelo modelo
 function getYearByModel() {
-    fetch("".concat(url, "/").concat(brand.value, "/models/").concat(models.value, "/years"))
+    fetch(`${url}/${brand.value}/models/${models.value}/years`)
         .then(function (response) { return response.json(); })
         .then(function (data) { return JSON.stringify(data); })["catch"](function (error) { return console.error(error); });
 }
 //seleciona o ano e coloca para o option
 function selectYear() {
-    fetch("".concat(url, "/").concat(brand.value, "/models/").concat(models.value, "/years"))
+    fetch(`${url}/${brand.value}/models/${models.value}/years`)
         .then(function (response) { return response.json(); })
         .then(function (data) {
         var selectModel = document.querySelector('#years');
@@ -87,19 +96,18 @@ function selectYear() {
 
 //busca o preço
 function getVheicleHistory() {
-    fetch("".concat(url, "/").concat(brand.value, "/models/").concat(models.value, "/years/").concat(years.value))
+    fetch(`${url}/${brand.value}/models/${models.value}/years/${years.value}`)
         .then(function (response) { return response.json(); })
         .then(function (data) { return JSON.stringify(data); })["catch"](function (error) { return console.error(error); });
 }
 //pega o Preço
 function setFipePrice() {
-    fetch("".concat(url, "/").concat(brand.value, "/models/").concat(models.value, "/years/").concat(years.value))
+    fetch(`${url}/${brand.value}/models/${models.value}/years/${years.value}`)
         .then(function (response) { return response.json(); })
         .then(function (data) {
         fipePrice = data.price;
         codeFipe = data.codeFipe;
-        referenceMonth = data.referenceMonth;
-        
+        selectedData = data;    
        
         // Remove o "R$"
         fipePrice = fipePrice.replace("R$ ", "");
@@ -109,7 +117,8 @@ function setFipePrice() {
 }
 //logica de para calcular a porcentagem do valor ta tabela fipe
 function attValue() {
-    vehicleValue = parseFloat((document.querySelector("#vehicle-value")).value);
+    vehicleValueResult = ((document.querySelector("#vehicle-value")).value);
+    vehicleValue = parseFloat(vehicleValueResult)
     percentualValue = (vehicleValue - fipePrice) / fipePrice * 100;
     console.log(`Valor do veiculo: ${vehicleValue} valor na tabela fipe: ${fipePrice} valor em percentual:${percentualValue}`);
     
@@ -129,6 +138,7 @@ function attValue() {
         
     }
 }
+//essa função renderiza no HTML o resultado total.
 function render() {
     var apiResult = document.querySelector("#renderApiResult");
     return apiResult.innerHTML = 
@@ -142,11 +152,11 @@ function render() {
         <li>Mês referencia: </li>
       </ul>
       <ul>
-        <li>${brand.name}</li>
-        <li>${models.name}</li>
-        <li>${years.value}</li>
-        <li>${codeFipe}</li>
-        <li>${referenceMonth}</li>
+      <li>${selectedData.brand}</li>
+      <li>${selectedData.model}</li>
+      <li>${selectedData.modelYear}</li>
+      <li>${codeFipe}</li>
+      <li>${selectedData.referenceMonth}</li>
       </ul>
 
     </div >
@@ -156,14 +166,14 @@ function render() {
         <li>Valor pela Fipe: </li>
       </ul>
       <ul>
-        <li>R$ ${vehicleValue}</li>
+        <li>R$ ${vehicleValueResult}</li>
         <li>R$ ${fipePrice}</li>
       </ul>
 
     </div>
     <div class="row mt-5 d-flex justify-content">
       <p>Valor ${resultOfFipe} da tabela FIPE</p>
-      <h1>${percentualValue}%</h1>
+      <h1>${percentualValue.toFixed(2)}%</h1>
     </div>
   </div>
   <div class="d-flex justify-content-center" id="footer">
@@ -171,6 +181,7 @@ function render() {
   </div>
 </div>`
 }
+
 //essas função atualiza o valor do option e atualiza a url, além de executar as outras funções.
 async function searchType(){
 
