@@ -26,10 +26,10 @@ Abra o `CMD` na pasta do projeto e digite o seguinte comando `npm install`, espe
 
 ## 🚧 Status do projeto 🚧
 Projeto Finalizado (mas sempre podemos melhorar :D)
-## 📸Imagens do Projeto. 📸
+## 📸Imagens do Projeto 📸
 <p><img src="./src/img/screenshot1.png"></p>
 
-<h1 align="center">Informações do Dev. 😁💻</h1>
+<h1 align="center">Informações do Dev 😁💻</h1>
 
 <p align = "center">
 <a href="https://black598.github.io/Portifolio/">Portifolio</a> •
