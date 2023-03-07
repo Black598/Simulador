@@ -14,7 +14,7 @@ let selectedData = "";
 var vehicleValue = 0;
 var fipePrice = 0;
 var percentualValue = 0;
-let vehicleValueresult = "";
+
 
 
 
@@ -37,6 +37,8 @@ function selectBrand() {
             var options = data.map( brand => `<option value="${brand.code}">${brand.name}</option>`);
             selectBrand.innerHTML = options.join("");
         });
+        
+        
     }
     else if (url === brandMotocycles) {
         fetch("https://parallelum.com.br/fipe/api/v2/motorcycles/brands")
@@ -46,6 +48,7 @@ function selectBrand() {
             var options = data.map(brand =>  `<option value="${brand.code}">${brand.name}</option>`);
             selectBrand.innerHTML = options.join("");
         });
+        
     }
     else if (url === brandTrucks) {
         fetch("https://parallelum.com.br/fipe/api/v2/trucks/brands")
@@ -55,6 +58,7 @@ function selectBrand() {
             var options = data.map(brand => `<option value="${brand.code}">${brand.name}</option>`);
             selectBrand.innerHTML = options.join("");
         });
+        
     }
     else {
         console.error("Marca Não encontrada");
@@ -115,13 +119,9 @@ function setFipePrice() {
         fipePrice = parseFloat(fipePrice.replace(",", ""));
     });
 }
-//logica de para calcular a porcentagem do valor ta tabela fipe
-function attValue() {
-    vehicleValueResult = ((document.querySelector("#vehicle-value")).value);
-    vehicleValue = parseFloat(vehicleValueResult)
-    percentualValue = (vehicleValue - fipePrice) / fipePrice * 100;
-    console.log(`Valor do veiculo: ${vehicleValue} valor na tabela fipe: ${fipePrice} valor em percentual:${percentualValue}`);
-    
+//Teste logico
+function logicTest(){
+
     if (percentualValue >= 10.00) {
         resultOfFipe = "acima"
         render();
@@ -138,9 +138,18 @@ function attValue() {
         
     }
 }
+//logica de para calcular a porcentagem do valor ta tabela fipe
+function attValue() {
+    vehicleValueResult = ((document.querySelector("#vehicle-value")).value);
+    vehicleValue = parseFloat(vehicleValueResult)
+    percentualValue = (vehicleValue - fipePrice) / fipePrice * 100;
+    logicTest()
+    
+}
 //essa função renderiza no HTML o resultado total.
 function render() {
     var apiResult = document.querySelector("#renderApiResult");
+    
     return apiResult.innerHTML = 
     `<div class="row">
     <div class="col d-flex">
@@ -152,11 +161,11 @@ function render() {
         <li>Mês referencia: </li>
       </ul>
       <ul>
-      <li>${selectedData.brand}</li>
-      <li>${selectedData.model}</li>
-      <li>${selectedData.modelYear}</li>
-      <li>${codeFipe}</li>
-      <li>${selectedData.referenceMonth}</li>
+        <li>${selectedData.brand}</li>
+        <li>${selectedData.model}</li>
+        <li>${selectedData.modelYear}</li>
+        <li>${codeFipe}</li>
+        <li>${selectedData.referenceMonth}</li>
       </ul>
 
     </div >
@@ -171,15 +180,19 @@ function render() {
       </ul>
 
     </div>
-    <div class="row mt-5 d-flex justify-content">
-      <p>Valor ${resultOfFipe} da tabela FIPE</p>
-      <h1>${percentualValue.toFixed(2)}%</h1>
+    <div id="porcent" class="text-success text-warning text-danger ">
+      <div class=" d-flex justify-content-end pr-container">
+        <p>Valor ${resultOfFipe} da tabela FIPE</p>
+      </div>
+      <div class="d-flex justify-content-end pr-container">
+        <h1>${percentualValue.toFixed(2)}%</h1>
+      </div>
+      <div class="d-flex justify-content-center mt-4" id="footer">
+        <h3>Valor ${resultOfFipe} do mercado</h3>
+      </div>
     </div>
   </div>
-  <div class="d-flex justify-content-center" id="footer">
-    <h3>Valor ${resultOfFipe} do mercado</h3>
-  </div>
-</div>`
+`
 }
 
 //essas função atualiza o valor do option e atualiza a url, além de executar as outras funções.
