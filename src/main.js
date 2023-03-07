@@ -6,18 +6,16 @@ var brandCars = "https://parallelum.com.br/fipe/api/v2/cars/brands";
 var brandTrucks = "https://parallelum.com.br/fipe/api/v2/trucks/brands";
 var brandMotocycles = "https://parallelum.com.br/fipe/api/v2/motorcycles/brands";
 
+//Valores retornados da API e retornados do usuario.
+var vehicleValue = 0; //Valor do veiculo retornado pelo usuario.
+
 var codeFipe = "";
 let resultOfFipesCount = "";
 let resultOfFipe = ""; 
 let model = "";
 let selectedData = "";
-var vehicleValue = 0;
 var fipePrice = 0;
 var percentualValue = 0;
-
-
-
-
 
 
 //Essa função solicita os dados pra o servidor
@@ -65,6 +63,8 @@ function selectBrand() {
     }
     return;
 }
+
+//--------------Funções de Set an Get------------------//
 //pega o modelo pela marca
 function getModelsbyBrand() {
     fetch(`${url}/${brand.value}/models`)
@@ -119,38 +119,56 @@ function setFipePrice() {
         fipePrice = parseFloat(fipePrice.replace(",", ""));
     });
 }
-//Teste logico
-function logicTest(){
 
+//-----------------------funções de teste logico-----------------//
+//Teste logico para saber qual valor vai por escrito  e rendeizar a pagina
+function logicTest(){
+    
     if (percentualValue >= 10.00) {
         resultOfFipe = "acima"
         render();
-        
+        element.classList.add("text-danger");
     }
     else if (percentualValue <= -10.00) {
         resultOfFipe = "abaixo"
         render();
-        
+        element.classList.add("text-success");
     }
     else if (percentualValue <= 9.99 || percentualValue >= -9.99) {
         resultOfFipe = "na média";
         render();
-        
+        element.classList.add("text-warning");
     }
 }
-//logica de para calcular a porcentagem do valor ta tabela fipe
+
+//calculo de porcentagem do valor ta tabela fipe e chama a função de logica 
 function attValue() {
     vehicleValueResult = ((document.querySelector("#vehicle-value")).value);
     vehicleValue = parseFloat(vehicleValueResult)
     percentualValue = (vehicleValue - fipePrice) / fipePrice * 100;
     logicTest()
-    
 }
+
+//função que muda a cor da porcentagem.
+function colorSelection(){
+    const element = document.getElementById("porcent");
+    if (percentualValue >= 10.00) {
+        element.classList.add("text-danger");
+    }
+    else if (percentualValue <= -10.00) {
+        element.classList.add("text-success");
+    }
+    else if (percentualValue <= 9.99 || percentualValue >= -9.99) {
+        element.classList.add("text-warning");
+    }
+}
+
+//-------------------função de render--------------//
 //essa função renderiza no HTML o resultado total.
 function render() {
     var apiResult = document.querySelector("#renderApiResult");
-    
-    return apiResult.innerHTML = 
+
+    apiResult.innerHTML = 
     `<div class="row">
     <div class="col d-flex">
       <ul>
@@ -180,7 +198,7 @@ function render() {
       </ul>
 
     </div>
-    <div id="porcent" class="text-success text-warning text-danger ">
+    <div id="porcent">
       <div class=" d-flex justify-content-end pr-container">
         <p>Valor ${resultOfFipe} da tabela FIPE</p>
       </div>
@@ -193,8 +211,9 @@ function render() {
     </div>
   </div>
 `
+colorSelection(percentualValue)
 }
-
+//funções de execução.
 //essas função atualiza o valor do option e atualiza a url, além de executar as outras funções.
 async function searchType(){
 
@@ -202,7 +221,8 @@ async function searchType(){
     url=`https://parallelum.com.br/fipe/api/v2/${VehicleType}/brands`
     
     await getType();
-    await selectBrand()
+    await selectBrand();
+    
 }
 async function searchModel() {
 
@@ -219,9 +239,8 @@ async function searchResults(){
     await setFipePrice()
 
 }
-
-
 async function getFipe() {
     
     await attValue()
 }
+
