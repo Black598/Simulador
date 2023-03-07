@@ -9,7 +9,6 @@
 ## 🎈 Descrição 🎈
 um simulador de vendas de carros que consome a API da Fipe para basear seus dados. 
 
-
 ## 🔗 Tecnologias 🔗
 Para realizar esse projeto foi utilizado as seguintes tecnologias:
 
