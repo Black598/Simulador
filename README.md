@@ -7,7 +7,7 @@
 </p>
 
 ## 🎈 Descrição 🎈
-um simulador de vendas de carros que consome a API da Fipe para basear seus dados. 
+Um simulador de vendas de carros que consome a API da Fipe para basear seus dados. 
 
 ## 🔗 Tecnologias 🔗
 Para realizar esse projeto foi utilizado as seguintes tecnologias:
@@ -21,7 +21,7 @@ Para realizar esse projeto foi utilizado as seguintes tecnologias:
 ## 👀 Lembretes 👀
 O projeto funciona em `LocalHost`. 
 
-Lembre-se de checar se o pacote `node` está instalado em seu computador. 
+Lembre-se de checar se o pacote `node` está instalado em seu computador: 
 Abra o `CMD` na pasta do projeto e digite o seguinte comando `npm install`, espere baixar as dependencias e logo após utilizar o `ng serve`. prontinho 😁 o site estará funcionando na porta `4200` então abra seu navegador e digite `http://localhost:4200`.
 
 ## 🚧 Status do projeto 🚧
